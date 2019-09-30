@@ -30,10 +30,17 @@ public class JavaFxIntro extends Application {
         label.setFont(fnt1);
         label.setTextFill(Color.BLUE);
         label2.setFont(fnt1);
-        label2.setTextFill(Color.YELLOW);
+        label2.setTextFill(Color.GREEN);
+
+        Button button = new Button("hit me");
+        button.setOnAction(e -> {
+            button.setText("You suck");
+            label.setTextFill(Color.ORANGE);
+        });
 
         hbox.getChildren().add(label);
         hbox.getChildren().add(label2);
+        hbox.getChildren().add(button);
         pane.getChildren().add(hbox); // Add HBox to the pane
 
         rec.widthProperty().bind(hbox.widthProperty().divide(2));
