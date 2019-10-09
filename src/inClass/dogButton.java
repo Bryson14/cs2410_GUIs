@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -22,15 +23,15 @@ public class dogButton extends Application {
         Random ran = new Random();
 
         Button bt = new Button("Wanna a Puppy?");
-        Pane pane = new FlowPane();
+        Pane pane = new HBox();
         pane.getChildren().add(bt);
 
         bt.setOnAction(e -> {
             bt.setText(BUTTON_TAG[i++]);
             if (i > 2 ) i = 0;
 
-            int h = ran.nextInt(500)+500;
-            int w = ran.nextInt(200) + 800;
+            int h = ran.nextInt(100)+300;
+            int w = ran.nextInt(200) + 300;
             String url = BASE_URL + "/" + w + "/" + h;
             pane.getChildren().remove(image);
             image = new ImageView(url);
@@ -38,7 +39,7 @@ public class dogButton extends Application {
         });
 
 
-        Scene scene = new Scene(pane);
+        Scene scene = new Scene(pane, 600, 400);
         stage.setScene(scene);
         stage.setTitle("DOG Generator!");
         stage.show();
