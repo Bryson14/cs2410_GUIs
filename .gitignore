@@ -1,3 +1,4 @@
 *xml
-*out/production*
+out/production*
 .idea*
+*.kotlin_module
