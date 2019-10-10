@@ -28,12 +28,16 @@ public class hangman extends Application {
         int[] WAIST = {300, 300};
         int[] SHOLDRS = {300, 150};
         Line post = new Line(100,100, 100, 500);
+        post.setStrokeWidth(15);
+        post.setStroke(Color.SADDLEBROWN);
         Line crossBoard = new Line(100,100,300,100);
+        crossBoard.setStroke(Color.SADDLEBROWN);
+        crossBoard.setStrokeWidth(5);
         Line rope = new Line(300,100,300,130);
         Line body = new Line(SHOLDRS[0], SHOLDRS[1], WAIST[0], WAIST[1]);
         int LENGTH = 100;
-        Line rLeg = new Line(WAIST[0], WAIST[1], Math.cos(30) * LENGTH + WAIST[0], WAIST[1] - Math.sin(30) * LENGTH);
-        Line lLeg = new Line(WAIST[0], WAIST[1], WAIST[0] - Math.cos(30) * LENGTH, WAIST[1] - Math.sin(30) * LENGTH);
+        Line lLeg = new Line(WAIST[0], WAIST[1], Math.cos(30) * LENGTH + WAIST[0], WAIST[1] - Math.sin(30) * LENGTH);
+        Line rLeg = new Line(WAIST[0], WAIST[1], WAIST[0] - Math.cos(30) * LENGTH, WAIST[1] - Math.sin(30) * LENGTH);
         Line rArm = new Line(SHOLDRS[0], SHOLDRS[1], SHOLDRS[0] + LENGTH * Math.cos(30), SHOLDRS[1] - LENGTH * Math.sin(30));
         Line lArm = new Line(SHOLDRS[0], SHOLDRS[1], SHOLDRS[0] - LENGTH * Math.cos(30), SHOLDRS[1] - LENGTH * Math.sin(30));
         Arc base = new Arc(100, 550, 75,50, 0 , 180);

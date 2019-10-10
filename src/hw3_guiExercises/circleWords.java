@@ -13,23 +13,27 @@ public class circleWords extends Application {
     public void start(Stage primaryStage) {
 
         Pane pane = new Pane();
-        int[] CENTER = {200,200};
-        String message = "Lets get this bread fam  ";
-        String style = "-fx-font: 38 rockwell;";
-        double RADIUS = 75.0;
+        javafx.beans.binding.DoubleBinding[] CENTER = {pane.widthProperty().divide(2),pane.heightProperty().divide(2)};
+        Color color = Color.TEAL;
+        String message = "Bryson would like an A+ please! "; // add space at the end for better appearance
+        String style = "-fx-font: 32 rockwell;";
+        double RADIUS = 180.0;
 
         for (int i  = 0; i < message.length(); i++) {
-            double arcAngle = (i * (2*Math.PI) / message.length()) + Math.PI;
+
+            double arcAngle = (i * (2*Math.PI) / message.length()) + Math.PI; // add pi to start on left side of circle
+
             Text t = new Text(String.valueOf(message.charAt(i)));
             t.setStyle(style);
-            t.setX(CENTER[0] + Math.cos(arcAngle) * RADIUS);
-            t.setY(CENTER[1] + Math.sin(arcAngle) * RADIUS);
-            t.setRotate(90 + arcAngle*180/Math.PI);
+            t.setFill(color);
+            t.xProperty().bind((CENTER[0].add(Math.cos(arcAngle) * RADIUS)));
+            t.yProperty().bind((CENTER[1].add( Math.sin(arcAngle) * RADIUS)));
+            t.setRotate(90 + arcAngle*180/Math.PI); // add 90 to start first letter on its left side
+
             pane.getChildren().add(t);
         }
 
-
-        Scene s = new Scene(pane, 400, 400);
+        Scene s = new Scene(pane, 450, 450);
         primaryStage.setScene(s);
         primaryStage.setTitle("Circle Words");
         primaryStage.show();
