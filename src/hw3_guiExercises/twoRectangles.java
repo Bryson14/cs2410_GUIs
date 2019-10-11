@@ -3,44 +3,93 @@ package hw3_guiExercises;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
-import java.util.EventListener;
+import java.util.Scanner;
 
 public class twoRectangles extends Application {
 
+    private boolean contains(int[] inputs) {
+        int leftSideDiff = inputs[0] - inputs[2];
+        boolean leftSideDiffNeg = leftSideDiff < 0;
+        int rightSideDiff = (inputs[0] + inputs[4]) - (inputs[2] + inputs[6]);
+        boolean rightSideDiffNeg = rightSideDiff < 0;
+
+        int topSideDiff = inputs[1] - inputs[3];
+        boolean topSideDiffNeg = topSideDiff < 0;
+        System.out.println("top side difference negative");
+        int bottomSideDiff = (inputs[1] + inputs[5]) - (inputs[3] + inputs[7]);
+        boolean bottomSideDiffNeg = bottomSideDiff < 0;
+
+        if (leftSideDiffNeg && !rightSideDiffNeg && !topSideDiffNeg && bottomSideDiffNeg) {
+            System.out.println("true");
+            // square one contains two
+            return true;
+        } else if (!leftSideDiffNeg && rightSideDiffNeg && topSideDiffNeg && !bottomSideDiffNeg) {
+            // square two contains one
+            return true;
+        } else return false;
+    }
+
+    private boolean overlaps (int[] inputs) {
+        return false;
+    }
+
     @Override
     public void start(Stage primaryStage) {
-
-
-
         /*
-        squares scene
+        rectangles scene
          */
 
-        Rectangle rec1 = new Rectangle(75,75);
+        Scanner scanner = new Scanner(System.in);
+        int[] inputs = new int[9];
+        String[] inputQuestions = {"Enter the x coor of square 1:", "Enter the y coor of square 1:",
+                "Enter the x coor of square 2:","Enter the y coor of square 2:", "Enter the width of square 1:",
+                "Enter the height of square 1:", "Enter the width of square 2:", "Enter the height of square 2:"
+        };
+
+        for (int i = 0; i < inputQuestions.length; i++) {
+            System.out.println(inputQuestions[i]);
+            inputs[i] = scanner.nextInt();
+        }
+
+        Text recStatus = new Text();
+        recStatus.setX(150);
+        recStatus.setY(490);
+        recStatus.setStyle("-fx-font: 24 arial;");
+
+        if (contains(inputs)) {
+            recStatus.setText("One rectangle is contained in another. ");
+        } else if (overlaps(inputs)) {
+            recStatus.setText("The rectangles overlap.");
+        } else {
+            recStatus.setText("The rectangles do not overlap.");
+        }
+
+        Rectangle rec1 = new Rectangle( inputs[4],inputs[5]);
         rec1.setStroke(Color.RED);
         rec1.setFill(Color.TRANSPARENT);
-        rec1.setX(100);
-        rec1.setY(200);
+        rec1.setX(inputs[0]);
+        rec1.setY(inputs[1]);
 
-        Rectangle rec2 = new Rectangle(75,75);
+        Rectangle rec2 = new Rectangle( inputs[6], inputs[7]);
         rec2.setStroke(Color.BLUE);
         rec2.setFill(Color.TRANSPARENT);
-        rec2.setX(300);
-        rec2.setY(200);
+        rec2.setX(inputs[2]);
+        rec2.setY(inputs[3]);
 
         Pane paneRectangles = new Pane();
         paneRectangles.getChildren().add(rec1);
         paneRectangles.getChildren().add(rec2);
-        Scene scenerec = new Scene(paneRectangles, 600, 600);
+        paneRectangles.getChildren().add(recStatus);
+        Scene sceneRec = new Scene(paneRectangles, 600, 500);
 
 
         /*
@@ -49,35 +98,32 @@ public class twoRectangles extends Application {
         Text message =  new Text("Welcome to JavaFX");
         message.setFill(Color.BLACK);
         message.setStyle("-fx-font: 30 calibri;");
-        message.setX(300);
+        message.setX(150);
         message.setY(300);
 
 
         Rectangle rec = new Rectangle(300, 80, Color.GRAY);
-        rec.setX(300);
-        rec.setY(600);
+        rec.setX(130);
+        rec.setY(250);
         rec.setArcWidth(20);
         rec.setArcHeight(20);
 
         Button bt = new Button("Press Me!");
-        bt.setLayoutY(500);
+        bt.setTranslateX(230);
+        bt.setTranslateY(50);
         bt.setOnAction(e -> {
-            primaryStage.setScene(scenerec);
+            primaryStage.setScene(sceneRec);
+
         });
 
-        Pane paneIntro = new StackPane();
+        Pane paneIntro = new Pane();
         paneIntro.getChildren().add(rec);
         paneIntro.getChildren().add(message);
+        paneIntro.getChildren().add(bt);
 
-        Pane hbox = new HBox();
-        hbox.getChildren().add(paneIntro);
-        hbox.getChildren().add(bt);
-
-
-
-        Scene s = new Scene(hbox, 600,600);
+        Scene s = new Scene(paneIntro, 600,500);
         primaryStage.setScene(s);
-        primaryStage.setTitle("HangMan Drawing");
+        primaryStage.setTitle("Two rectangles");
         primaryStage.show();
     }
 }

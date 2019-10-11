@@ -15,7 +15,7 @@ public class circleWords extends Application {
         Pane pane = new Pane();
         javafx.beans.binding.DoubleBinding[] CENTER = {pane.widthProperty().divide(2),pane.heightProperty().divide(2)};
         Color color = Color.TEAL;
-        String message = "Bryson would like an A+ please! "; // add space at the end for better appearance
+        String message = "Let's get this bread fam! "; // add space at the end for better appearance
         String style = "-fx-font: 32 rockwell;";
         double RADIUS = 180.0;
 
