@@ -3,13 +3,10 @@ package hw3_guiExercises;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.util.Scanner;
@@ -18,28 +15,38 @@ public class twoRectangles extends Application {
 
     private boolean contains(int[] inputs) {
         int leftSideDiff = inputs[0] - inputs[2];
-        boolean leftSideDiffNeg = leftSideDiff < 0;
+        boolean leftSideDiffNeg = leftSideDiff < 0; //false if blue is to the left of red
         int rightSideDiff = (inputs[0] + inputs[4]) - (inputs[2] + inputs[6]);
-        boolean rightSideDiffNeg = rightSideDiff < 0;
+        boolean rightSideDiffNeg = rightSideDiff < 0;// false if blue is to the left of red
 
         int topSideDiff = inputs[1] - inputs[3];
-        boolean topSideDiffNeg = topSideDiff < 0;
-        System.out.println("top side difference negative");
+        boolean topSideDiffNeg = topSideDiff < 0; // true if blue above red
         int bottomSideDiff = (inputs[1] + inputs[5]) - (inputs[3] + inputs[7]);
-        boolean bottomSideDiffNeg = bottomSideDiff < 0;
+        boolean bottomSideDiffNeg = bottomSideDiff < 0; // true if red above blue
 
-        if (leftSideDiffNeg && !rightSideDiffNeg && !topSideDiffNeg && bottomSideDiffNeg) {
+        if (leftSideDiffNeg && !rightSideDiffNeg && topSideDiffNeg && !bottomSideDiffNeg) {
             System.out.println("true");
-            // square one contains two
+            // red contains blue
             return true;
-        } else if (!leftSideDiffNeg && rightSideDiffNeg && topSideDiffNeg && !bottomSideDiffNeg) {
-            // square two contains one
+        } else if (!leftSideDiffNeg && rightSideDiffNeg && !topSideDiffNeg && bottomSideDiffNeg) {
+            // blue contains red
             return true;
         } else return false;
     }
 
     private boolean overlaps (int[] inputs) {
-        return false;
+        int left1 = inputs[0];
+        int top1 = inputs[1];
+        int left2 = inputs[2];
+        int top2 = inputs[3];
+        int right1 = inputs[4] + inputs[0];
+        int right2 = inputs[6] + inputs[2];
+        int bottom1 = inputs[1] + inputs[5];
+        int bottom2 = inputs[3] + inputs[7];
+
+        if( ((left1 < left2 && left2 < right1) || (left2 < left1 && left1 < right2 ))&&
+                ((top1 < top2 && top2 < bottom1) || (top2 < top1 && top1 < bottom2))) return true;
+        else return false;
     }
 
     @Override
@@ -65,10 +72,10 @@ public class twoRectangles extends Application {
         recStatus.setY(490);
         recStatus.setStyle("-fx-font: 24 arial;");
 
-        if (contains(inputs)) {
-            recStatus.setText("One rectangle is contained in another. ");
-        } else if (overlaps(inputs)) {
+        if (overlaps(inputs)) {
             recStatus.setText("The rectangles overlap.");
+        } else if (contains(inputs)) {
+            recStatus.setText("One rectangle is contained in another. ");
         } else {
             recStatus.setText("The rectangles do not overlap.");
         }
