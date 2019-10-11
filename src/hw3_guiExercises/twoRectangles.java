@@ -14,18 +14,12 @@ import java.util.Scanner;
 public class twoRectangles extends Application {
 
     private boolean contains(int[] inputs) {
-        int leftSideDiff = inputs[0] - inputs[2];
-        boolean leftSideDiffNeg = leftSideDiff < 0; //false if blue is to the left of red
-        int rightSideDiff = (inputs[0] + inputs[4]) - (inputs[2] + inputs[6]);
-        boolean rightSideDiffNeg = rightSideDiff < 0;// false if blue is to the left of red
-
-        int topSideDiff = inputs[1] - inputs[3];
-        boolean topSideDiffNeg = topSideDiff < 0; // true if blue above red
-        int bottomSideDiff = (inputs[1] + inputs[5]) - (inputs[3] + inputs[7]);
-        boolean bottomSideDiffNeg = bottomSideDiff < 0; // true if red above blue
+        boolean leftSideDiffNeg = inputs[0] - inputs[2] < 0; //false if blue is to the left of red
+        boolean rightSideDiffNeg = (inputs[0] + inputs[4]) - (inputs[2] + inputs[6]) < 0;// false if blue is to the left of red
+        boolean topSideDiffNeg = inputs[1] - inputs[3] < 0; // true if blue above red
+        boolean bottomSideDiffNeg = (inputs[1] + inputs[5]) - (inputs[3] + inputs[7]) < 0; // true if red above blue
 
         if (leftSideDiffNeg && !rightSideDiffNeg && topSideDiffNeg && !bottomSideDiffNeg) {
-            System.out.println("true");
             // red contains blue
             return true;
         } else if (!leftSideDiffNeg && rightSideDiffNeg && !topSideDiffNeg && bottomSideDiffNeg) {
@@ -44,8 +38,8 @@ public class twoRectangles extends Application {
         int bottom1 = inputs[1] + inputs[5];
         int bottom2 = inputs[3] + inputs[7];
 
-        if( ((left1 < left2 && left2 < right1) || (left2 < left1 && left1 < right2 ))&&
-                ((top1 < top2 && top2 < bottom1) || (top2 < top1 && top1 < bottom2))) return true;
+        if( ((left1 <= left2 && left2 <= right1) || (left2 <= left1 && left1 <= right2 ))&&
+                ((top1 <= top2 && top2 <= bottom1) || (top2 <= top1 && top1 <= bottom2))) return true;
         else return false;
     }
 
@@ -72,10 +66,10 @@ public class twoRectangles extends Application {
         recStatus.setY(490);
         recStatus.setStyle("-fx-font: 24 arial;");
 
-        if (overlaps(inputs)) {
-            recStatus.setText("The rectangles overlap.");
-        } else if (contains(inputs)) {
+        if (contains(inputs)) {
             recStatus.setText("One rectangle is contained in another. ");
+        } else if (overlaps(inputs)) {
+            recStatus.setText("The rectangles overlap.");
         } else {
             recStatus.setText("The rectangles do not overlap.");
         }
