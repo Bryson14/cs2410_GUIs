@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Arc;
+import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
 import javafx.scene.paint.Stop;
 import javafx.scene.paint.Color;
@@ -24,8 +25,8 @@ public class ClownFace extends Application {
 
         File file = new File("src\\inClass\\clownfaces.jpg");
         ImageView background = new ImageView(new Image(file.toURI().toString()));
-        background.setFitWidth(500);
-        background.setFitHeight(500);
+        background.setFitWidth(700);
+        background.setFitHeight(700);
 
         Arc hair = new Arc();
         hair.centerXProperty().bind(CENTER[0]);
@@ -51,7 +52,7 @@ public class ClownFace extends Application {
         head.centerXProperty().bind(CENTER[0]);
         head.centerYProperty().bind(CENTER[1].subtract(20));
         head.setRadiusX(110);
-        head.setRadiusY(110);
+        head.setRadiusY(130);
         head.setStartAngle(0.0);
         head.setLength(360);
         head.setFill(Color.PEACHPUFF);
