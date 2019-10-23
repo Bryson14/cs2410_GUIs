@@ -17,8 +17,13 @@ public class ClockAnimation extends Application {
     @Override // Override the start method in the Application class
     public void start(Stage primaryStage) {
         ClockPane clock = new ClockPane(); // Create a clock
-        clock.setCurrentTime();
 
+
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1), e -> {
+            clock.setCurrentTime();
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
 
         // Create a scene and place it in the stage
         Scene scene = new Scene(clock, 250, 250);

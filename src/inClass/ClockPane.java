@@ -12,6 +12,9 @@ public class ClockPane extends Pane {
     private int hour;
     private int minute;
     private int second;
+    private int milli;
+    private double mSecond;
+    private double mMinute;
 
     // Clock pane's width and height
     private double w = 250, h = 250;
@@ -26,6 +29,8 @@ public class ClockPane extends Pane {
         this.hour = hour;
         this.minute = minute;
         this.second = second;
+        this.milli = 0;
+        this.mSecond = 0;
         paintClock();
     }
 
@@ -93,6 +98,9 @@ public class ClockPane extends Pane {
         this.hour = calendar.get(Calendar.HOUR_OF_DAY);
         this.minute = calendar.get(Calendar.MINUTE);
         this.second = calendar.get(Calendar.SECOND);
+        this.milli = calendar.get(Calendar.MILLISECOND);
+        this.mSecond = (double)(this.second * 1000 + this.milli) / 1000;
+        this.mMinute = (double) (this.minute * 60 + this.second) / 60;
 
         paintClock(); // Repaint the clock
     }
@@ -116,18 +124,18 @@ public class ClockPane extends Pane {
         // Draw second hand
         double sLength = clockRadius * 0.8;
         double secondX = centerX + sLength *
-                Math.sin(second * (2 * Math.PI / 60));
+                Math.sin(mSecond * (2 * Math.PI / 60));
         double secondY = centerY - sLength *
-                Math.cos(second * (2 * Math.PI / 60));
+                Math.cos(mSecond * (2 * Math.PI / 60));
         Line sLine = new Line(centerX, centerY, secondX, secondY);
         sLine.setStroke(Color.RED);
 
         // Draw minute hand
         double mLength = clockRadius * 0.65;
         double xMinute = centerX + mLength *
-                Math.sin(minute * (2 * Math.PI / 60));
+                Math.sin(mMinute * (2 * Math.PI / 60));
         double minuteY = centerY - mLength *
-                Math.cos(minute * (2 * Math.PI / 60));
+                Math.cos(mMinute * (2 * Math.PI / 60));
         Line mLine = new Line(centerX, centerY, xMinute, minuteY);
         mLine.setStroke(Color.BLUE);
 
