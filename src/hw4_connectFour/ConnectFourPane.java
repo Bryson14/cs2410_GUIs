@@ -2,12 +2,13 @@ package hw4_connectFour;
 
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 
-public class ConnectFourPane extends Pane {
+public class ConnectFourPane {
     private Board board;
     private Pane basePane;
     private int HEIGHT;
@@ -18,6 +19,7 @@ public class ConnectFourPane extends Pane {
     private Color boardColor;
     private Background background;
     private int team;
+    private Scene scene;
 
     ConnectFourPane() {
         HEIGHT = 6;
@@ -30,6 +32,7 @@ public class ConnectFourPane extends Pane {
         this.basePane = new HBox();
         this.board = new Board(this.WIDTH, this.HEIGHT);
         newGame();
+        scene  = new Scene(basePane);
     }
 
     ConnectFourPane(int width, int height) {
@@ -43,6 +46,7 @@ public class ConnectFourPane extends Pane {
         this.basePane = new VBox();
         this.board = new Board(this.WIDTH, this.HEIGHT);
         newGame();
+        scene  = new Scene(basePane);
     }
 
     private void updateBoard(ActionEvent e) {
@@ -54,12 +58,16 @@ public class ConnectFourPane extends Pane {
         }
     }
 
+    public Scene getScene() {
+        return scene;
+    }
+
     private void changeDiskColor(Color color, int team) {
         if (team == 1) team1Color = color;
         else if (team == -1) team2Color = color;
     }
 
-    private void newGame() {
+    void newGame() {
         for (int i = 0; i < this.WIDTH; i++) {
             VBox v = new VBox();
             v.setId("" + i);

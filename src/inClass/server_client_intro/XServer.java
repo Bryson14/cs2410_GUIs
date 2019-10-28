@@ -1,4 +1,4 @@
-package inClass;
+package inClass.server_client_intro;
 //Discuss Layout, Nodes, methods, lambdas
 
 import javafx.application.Application;

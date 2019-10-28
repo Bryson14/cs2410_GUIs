@@ -5,6 +5,7 @@ public class Board {
     private int[] lastAccessed;
     private int WIDTH;
     private int HEIGHT;
+    private int totalDisks;
 
     private class Column {
         private int occupiedCells;
@@ -15,7 +16,9 @@ public class Board {
             this.diskList = new int[height];
         }
     }
+
     Board() {
+        this.totalDisks = 0;
         this.WIDTH = 7;
         this.HEIGHT = 6;
         this.lastAccessed = new int[] {0,0}; //column, height from bottom
@@ -26,6 +29,7 @@ public class Board {
     }
 
     Board(int width, int height) {
+        this.totalDisks = 0;
         this.WIDTH = width;
         this.HEIGHT = height;
         this.lastAccessed = new int[] {0,0}; //column, height from bottom
@@ -40,21 +44,31 @@ public class Board {
         else return false;
     }
 
+    public Board reset() {
+        return new Board(this.WIDTH, this.HEIGHT);
+    }
+
     public void addDisk(int column, int team) {
         int idx = columns[column].occupiedCells;
         columns[column].diskList[idx] = team; // add disk to the correct spot
         columns[column].occupiedCells++;
+        this.totalDisks++;
         this.lastAccessed[0] = column; //remember last accessed disk
         this.lastAccessed[1] = idx;
     }
 
+    public boolean isFull() {
+        if (this.totalDisks >= this.WIDTH*this.HEIGHT) return true;
+        else return false;
+    }
+
     public void printBoard() {
-        StringBuilder line = new StringBuilder();
+        StringBuilder line = new StringBuilder("---");
         for (int k = 0; k < this.WIDTH; k++) {
             line.append("--");
         }
-        line.append("---");
         System.out.println(line);
+
         for (int i = this.HEIGHT -1; i >= 0; i--) {
             System.out.print("| ");
             for (int j = 0; j < this.WIDTH; j ++) {
@@ -62,6 +76,7 @@ public class Board {
             }
             System.out.println("|");
         }
+
         System.out.println(line);
     }
     private String getSymbol(int i){
@@ -71,17 +86,18 @@ public class Board {
         else return "idk";
     }
 
-//    public static void main(String[] args) {
-//        Board b = new Board();
-//        b.columns[0].diskList[0] = 1;
-//        b.columns[5].diskList[0] = -1;
-//        b.addDisk(3, 1);
-//        b.addDisk(3, -1);
-//        b.addDisk(3, 1);
-//        b.addDisk(3, -1);
-//        b.addDisk(3, 1);
-//        b.addDisk(3, -1);
-//        b.printBoard();
-//        System.out.println(b.canAddDisk(3));
-//    }
+    public static void main(String[] args) {
+        Board b = new Board();
+        b.columns[0].diskList[0] = 1;
+        b.columns[5].diskList[0] = -1;
+        b.addDisk(3, 1);
+        b.addDisk(3, -1);
+        b.addDisk(3, 1);
+        b.addDisk(3, -1);
+        b.addDisk(3, 1);
+        b.addDisk(3, -1);
+        b.addDisk(2, -1);
+        b.printBoard();
+        System.out.println(b.canAddDisk(3));
+    }
 }
