@@ -2,7 +2,6 @@ package hw4_connectFour;
 
 class Board {
     private Column[] columns;
-    private int[] lastAccessed;
     private int WIDTH;
     private int HEIGHT;
     private int totalDisks;
@@ -18,34 +17,37 @@ class Board {
         }
     }
 
-    Board() {
-        this(7,6);
-    }
-
     Board(int width, int height) {
         this.totalDisks = 0;
         this.WIDTH = width;
         this.HEIGHT = height;
         this.team = 1;
-        this.lastAccessed = new int[] {0,0}; //column, height from bottom
         this.columns = new Column[this.WIDTH];
         for (int i = 0; i < WIDTH; i++) {
             this.columns[i] = new Column(this.HEIGHT);
         }
     }
 
+    /**
+     * whether or not a disk can be added to the column
+     * @param column column index
+     * @return boolean
+     */
     boolean canAddDisk(int column) {
         return (columns[column].occupiedCells < this.HEIGHT);
     }
 
+    /**
+     * adds new disk to appropriate spot in column
+     * @param column column index
+     * @return returns grid position of placed disk
+     */
     String addDisk(int column) {
         int idx = columns[column].occupiedCells;
         columns[column].diskList[idx] = this.team; // add disk to the correct spot
-        this.team = this.team == 1? -1 : 1;
+        this.team = this.team == 1? 2 : 1;
         columns[column].occupiedCells++;
         this.totalDisks++;
-        this.lastAccessed[0] = column; //remember last accessed disk
-        this.lastAccessed[1] = idx;
         return "" + column + idx;
     }
 
@@ -56,6 +58,10 @@ class Board {
     boolean isFull() {
         return (this.totalDisks >= this.WIDTH*this.HEIGHT);
     }
+
+    /**
+     * prints to console the current state of board
+     */
 
     void printBoard() {
         StringBuilder line = new StringBuilder("---");
@@ -74,10 +80,16 @@ class Board {
         System.out.println(line);
     }
 
+    /**
+     * helper function for printBoard just for aesthetics
+     * @param i team represented by 1 or 2 or if empty, 0
+     * @return X or O
+     */
+
     private String getSymbol(int i){
         if (i == 0) return " ";
         else if (i == 1) return "X";
-        else if (i == -1) return "O";
+        else if (i == 2) return "O";
         else return "idk";
     }
 
@@ -86,22 +98,23 @@ class Board {
      * @return String of positions (column, row)
      */
     String[] getWinningIndexes() {
-        String[] idxs;
+        String[] indexes;
 
         for (int i = 0; i < this.HEIGHT; i++) {
             for (int j = 0; j < this.WIDTH; j++) {
                 if (columns[j].diskList[i] != 0) { //a piece is there
-                    idxs = findIndexes(j, i);
+                    indexes = findIndexes(j, i);
 
-                    if (idxs != null) return idxs;
+                    if (indexes != null) return indexes;
                 }
             }
         } return null;
     }
 
-    /*
-    only need to treat passed in spot as the end to avoid trying all 16 possible combinations on all 42 spots.
-     */
+    /**
+     * only need to treat passed in spot as the end to avoid trying all 16 possible combinations on all 42 spots.
+     * @return list of string pos for four disks in a row if exists
+     **/
     private String[] findIndexes(int column, int row){
         int team = columns[column].diskList[row];
         String[] indexes = new String[4];
@@ -119,6 +132,7 @@ class Board {
                 indexes[3] = "" + (column + 3) + row;
                 return indexes;
             }
+
         } if (row + 3 < this.HEIGHT) { //vertical
             int[] l = columns[column].diskList;
             if (l[row] == team && l[row + 1] == team && l[row + 2] == team && l[row + 3] == team ) {
@@ -129,7 +143,7 @@ class Board {
                 return indexes;
             }
 
-        } if (row + 3 < this.HEIGHT && column + 3 < this.WIDTH) { // /
+        } if (row + 3 < this.HEIGHT && column + 3 < this.WIDTH) { // diagonal /
             if (columns[column].diskList[row] == team &&
                     columns[column + 1].diskList[row + 1] ==  team &&
                     columns[column + 2].diskList[row + 2] == team &&
@@ -141,7 +155,8 @@ class Board {
                 indexes[3] = "" + (column + 3) + (row + 3);
                 return indexes;
             }
-        } if (row + 3 < this.HEIGHT && column - 3 >= 0) { // \
+
+        } if (row + 3 < this.HEIGHT && column - 3 >= 0) { // diagonal \
             if (columns[column].diskList[row] == team &&
                     columns[column - 1].diskList[row + 1] ==  team &&
                     columns[column - 2].diskList[row + 2] == team &&
@@ -153,7 +168,7 @@ class Board {
                 indexes[3] = "" + (column - 3) + (row + 3);
                 return indexes;
             }
-        }
-        return null;
+
+        } return null;
     }
 }
