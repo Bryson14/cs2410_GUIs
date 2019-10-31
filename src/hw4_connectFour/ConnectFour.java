@@ -12,12 +12,16 @@ public class ConnectFour extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        Pane basePane = new StackPane();
         ConnectFourPane c4 = new ConnectFourPane();
         Text message = new Text("Welcome to Connect Four");
         VBox Vpane = new VBox(c4, message);
         primaryStage.setScene(new Scene(Vpane));
         primaryStage.setTitle("Connect Four");
         primaryStage.show();
+    }
+
+    public static void main(String[] args)
+    {
+        Application.launch(args);
     }
 }

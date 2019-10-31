@@ -19,15 +19,7 @@ public class Board {
     }
 
     Board() {
-        this.totalDisks = 0;
-        this.WIDTH = 7;
-        this.HEIGHT = 6;
-        this.team = 1;
-        this.lastAccessed = new int[] {0,0}; //column, height from bottom
-        this.columns = new Column[this.WIDTH];
-        for (int i = 0; i < WIDTH; i++) {
-            this.columns[i] = new Column(this.HEIGHT);
-        }
+        this(7,6);
     }
 
     Board(int width, int height) {
@@ -93,15 +85,14 @@ public class Board {
         String[] idxs;
 
         for (int i = 0; i < this.HEIGHT; i++) {
-            for (int j = 0; j < this.WIDTH; j ++) {
+            for (int j = 0; j < this.WIDTH; j++) {
                 if (columns[j].diskList[i] != 0) { //a piece is there
                     idxs = findIndexes(j, i);
 
                     if (idxs != null) return idxs;
                 }
             }
-        }
-        return null;
+        } return null;
     }
 
     /*
@@ -109,8 +100,8 @@ public class Board {
      */
     private String[] findIndexes(int column, int row){
         int team = columns[column].diskList[row];
-        String[] idxs = new String[4];
-        idxs[0] = ""+ column + row;
+        String[] indexes = new String[4];
+        indexes[0] = ""+ column + row;
 
         if (column + 3 < this.WIDTH) { //horizontal
             if (columns[column].diskList[row] == team &&
@@ -119,19 +110,19 @@ public class Board {
                     columns[column + 3].diskList[row] == team) {
 
 
-                idxs[1] = "" + (column + 1) + row;
-                idxs[2] = "" + (column + 2) + row;
-                idxs[3] = "" + (column + 3) + row;
-                return idxs;
+                indexes[1] = "" + (column + 1) + row;
+                indexes[2] = "" + (column + 2) + row;
+                indexes[3] = "" + (column + 3) + row;
+                return indexes;
             }
         } if (row + 3 < this.HEIGHT) { //vertical
             int[] l = columns[column].diskList;
             if (l[row] == team && l[row + 1] == team && l[row + 2] == team && l[row + 3] == team ) {
 
-                idxs[1] = "" + column + (row + 1);
-                idxs[2] = "" + column + (row + 2);
-                idxs[3] = "" + column + (row + 3);
-                return idxs;
+                indexes[1] = "" + column + (row + 1);
+                indexes[2] = "" + column + (row + 2);
+                indexes[3] = "" + column + (row + 3);
+                return indexes;
             }
 
         } if (row + 3 < this.HEIGHT && column + 3 < this.WIDTH) { // /
@@ -141,10 +132,10 @@ public class Board {
                     columns[column + 3].diskList[row + 3] == team) {
 
 
-                idxs[1] = "" + (column + 1) + (row + 1);
-                idxs[2] = "" + (column + 2) + (row + 2);
-                idxs[3] = "" + (column + 3) + (row + 3);
-                return idxs;
+                indexes[1] = "" + (column + 1) + (row + 1);
+                indexes[2] = "" + (column + 2) + (row + 2);
+                indexes[3] = "" + (column + 3) + (row + 3);
+                return indexes;
             }
         } if (row + 3 < this.HEIGHT && column - 3 >= 0) { // \
             if (columns[column].diskList[row] == team &&
@@ -153,10 +144,10 @@ public class Board {
                     columns[column - 3].diskList[row + 3] == team) {
 
 
-                idxs[1] = "" + (column - 1) + (row + 1);
-                idxs[2] = "" + (column - 2) + (row + 2);
-                idxs[3] = "" + (column - 3) + (row + 3);
-                return idxs;
+                indexes[1] = "" + (column - 1) + (row + 1);
+                indexes[2] = "" + (column - 2) + (row + 2);
+                indexes[3] = "" + (column - 3) + (row + 3);
+                return indexes;
             }
         }
         return null;

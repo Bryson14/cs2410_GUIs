@@ -15,24 +15,16 @@ public class ConnectFourPane extends Pane{
     private int HEIGHT;
     private int WIDTH;
     private int rad;
+    private int gap;
     private Color team1Color;
     private Color team2Color;
     private Color nullColor;
     private Color boardColor;
-    private Background background;
+    private String background;
     private int team;
 
     ConnectFourPane() {
-        HEIGHT = 6;
-        WIDTH = 7;
-        team1Color = Color.RED;
-        team2Color = Color.BLUE;
-        nullColor = Color.LIGHTGREY;
-        team = 1;
-        rad = 35;
-        this.basePane = new HBox();
-        this.board = new Board(this.WIDTH, this.HEIGHT);
-        newGame();
+        this(7,6);
     }
 
     ConnectFourPane(int width, int height) {
@@ -43,13 +35,17 @@ public class ConnectFourPane extends Pane{
         nullColor = Color.LIGHTGREY;
         team = 1;
         rad = 35;
-//        background = new Background(new BackgroundFill(Paint.valueOf("FFFFFF"), CornerRadii.EMPTY, new Insets(5,5,5,5)));
-        this.basePane = new HBox();
+        gap = 5;
+        background = "#3f7dc7";
+        this.basePane = new StackPane();
+        this.basePane.setPadding(new Insets(15,15,15,15));
+        basePane.setStyle("-fx-background-color: " + background);
         this.board = new Board(this.WIDTH, this.HEIGHT);
         newGame();
     }
 
     private void updateBoard(ActionEvent e) {
+        System.out.println();
         VBox v = (VBox) e.getSource();
         int column = Integer.parseInt(v.getId());
         if (board.canAddDisk(column)) {
@@ -60,18 +56,29 @@ public class ConnectFourPane extends Pane{
 
     private void grayCircles() {
         GridPane pane = new GridPane();
-        pane.setHgap(5);
-        pane.setVgap(5);
-        pane.setAlignment(Pos.CENTER);
-        pane.maxHeight((double)(HEIGHT*35*5));
+        pane.setHgap(gap*4);
+        pane.setVgap(gap);
 
         for (int i = 0; i < WIDTH; i++) {
             for (int j = 0; j < HEIGHT; j++) {
                 Circle cir = new Circle(rad, this.nullColor);
                 pane.add(cir, j, i);
             }
-        }
-        this.basePane.getChildren().add(pane);
+        } this.basePane.getChildren().add(pane);
+    }
+
+    private void invisibleCircles() {
+        GridPane pane = new GridPane();
+        pane.setHgap(gap);
+        pane.setVgap(gap);
+        pane.setAlignment(Pos.CENTER);
+
+        for (int i = 0; i < WIDTH; i++) {
+            for (int j = 0; j < HEIGHT; j++) {
+                Circle cir = new Circle(rad, Color.TRANSPARENT);
+                pane.add(cir, j, i);
+            }
+        } this.basePane.getChildren().add(pane);
     }
 
     private void changeDiskColor(Color color, int team) {
@@ -81,36 +88,7 @@ public class ConnectFourPane extends Pane{
 
     void newGame() {
         grayCircles();
-//        for (int i = 0; i < this.WIDTH; i++) {
-//            VBox v = new VBox();
-//            v.setId("" + i);
-//            v.setBackground(background);
-//
-//            for (int j = 0; j < this.HEIGHT; j++) {
-//                Circle c = new Circle(35);
-//                c.setFill(this.nullColor);
-//                v.getChildren().add(c);
-//            }
-//            basePane.getChildren().add(v);
-//        }
+        invisibleCircles();
         getChildren().add(basePane);
     }
 }
-/*
-StackPane base = new StackPane();
-        Rectangle rec = new Rectangle(HEIGHT*(2*radius+gap)+3*gap, WIDTH*(2*radius+gap)+3*gap);
-        rec.setFill(background);
-        GridPane pane = new GridPane();
-        pane.setHgap(gap);
-        pane.setVgap(gap);
-        pane.setAlignment(Pos.CENTER);
-        for (int i = 0; i < WIDTH; i++) {
-            for (int j = 0; j < HEIGHT; j++) {
-                Circle cir = new Circle(radius, piece);
-                pane.add(cir, j, i);
-            }
-        }
-
-        base.getChildren().addAll(rec, pane);
-        return base;
- */
