@@ -1,6 +1,6 @@
 package hw4_connectFour;
 
-public class Board {
+class Board {
     private Column[] columns;
     private int[] lastAccessed;
     private int WIDTH;
@@ -34,12 +34,11 @@ public class Board {
         }
     }
 
-    public boolean canAddDisk(int column) {
-        if (columns[column].occupiedCells < this.HEIGHT) return true;
-        else return false;
+    boolean canAddDisk(int column) {
+        return (columns[column].occupiedCells < this.HEIGHT);
     }
 
-    public String addDisk(int column) {
+    String addDisk(int column) {
         int idx = columns[column].occupiedCells;
         columns[column].diskList[idx] = this.team; // add disk to the correct spot
         this.team = this.team == 1? -1 : 1;
@@ -50,16 +49,15 @@ public class Board {
         return "" + column + idx;
     }
 
-    public int getTeam() {
+    int getTeam() {
         return team;
     }
 
-    public boolean isFull() {
-        if (this.totalDisks >= this.WIDTH*this.HEIGHT) return true;
-        else return false;
+    boolean isFull() {
+        return (this.totalDisks >= this.WIDTH*this.HEIGHT);
     }
 
-    public void printBoard() {
+    void printBoard() {
         StringBuilder line = new StringBuilder("---");
         for (int k = 0; k < this.WIDTH; k++) {
             line.append("--");
@@ -87,7 +85,7 @@ public class Board {
      * returns the indexes of the 4 in-a-row disks
      * @return String of positions (column, row)
      */
-    public String[] getWinningIndexes() {
+    String[] getWinningIndexes() {
         String[] idxs;
 
         for (int i = 0; i < this.HEIGHT; i++) {
@@ -157,16 +155,5 @@ public class Board {
             }
         }
         return null;
-    }
-
-    public static void main(String[] args) {
-        Board b = new Board();
-        b.addDisk(0);
-        b.addDisk(0);
-        b.addDisk(0);
-        b.addDisk(0);
-        b.printBoard();
-        System.out.println(b.canAddDisk(3));
-        System.out.println(b.getWinningIndexes());
     }
 }
