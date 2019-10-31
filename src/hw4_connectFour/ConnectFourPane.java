@@ -57,21 +57,6 @@ public class ConnectFourPane extends Pane{
         } this.basePane.getChildren().add(this.bottomPane);
     }
 
-    private void invisibleCircles() {
-        GridPane middlePane = new GridPane();
-        middlePane.setHgap(gap*4);
-        middlePane.setVgap(gap);
-
-        for (int i = 0; i < WIDTH; i++) {
-            for (int j = 0; j < HEIGHT; j++) {
-                Circle cir = new Circle(rad, Color.TRANSPARENT);
-                cir.setOnMouseClicked(e-> {
-                    System.out.println("center:" + cir.getLayoutX());
-                });
-                middlePane.add(cir, i, j);
-            }
-        } this.basePane.getChildren().add(middlePane);
-    }
 
     private void placeDisk(String addedPos) {
 
