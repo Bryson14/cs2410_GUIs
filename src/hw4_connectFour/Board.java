@@ -1,7 +1,5 @@
 package hw4_connectFour;
 
-import java.awt.*;
-
 public class Board {
     private Column[] columns;
     private int[] lastAccessed;
@@ -48,10 +46,6 @@ public class Board {
         else return false;
     }
 
-    public Board reset() {
-        return new Board(this.WIDTH, this.HEIGHT);
-    }
-
     public void addDisk(int column) {
         int idx = columns[column].occupiedCells;
         columns[column].diskList[idx] = this.team; // add disk to the correct spot
@@ -96,7 +90,7 @@ public class Board {
      * @return String of positions (column, row)
      */
     public String[] getWinningIndexes() {
-        String[] idxs = new String[4];
+        String[] idxs;
 
         for (int i = 0; i < this.HEIGHT; i++) {
             for (int j = 0; j < this.WIDTH; j ++) {
@@ -109,6 +103,7 @@ public class Board {
         }
         return null;
     }
+
     /*
     only need to treat passed in spot as the end to avoid trying all 16 possible combinations on all 42 spots.
      */
@@ -164,7 +159,6 @@ public class Board {
                 return idxs;
             }
         }
-
         return null;
     }
 //
