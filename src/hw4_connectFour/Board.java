@@ -26,6 +26,7 @@ public class Board {
         this.totalDisks = 0;
         this.WIDTH = width;
         this.HEIGHT = height;
+        this.team = 1;
         this.lastAccessed = new int[] {0,0}; //column, height from bottom
         this.columns = new Column[this.WIDTH];
         for (int i = 0; i < WIDTH; i++) {
@@ -38,7 +39,7 @@ public class Board {
         else return false;
     }
 
-    public void addDisk(int column) {
+    public String addDisk(int column) {
         int idx = columns[column].occupiedCells;
         columns[column].diskList[idx] = this.team; // add disk to the correct spot
         this.team = this.team == 1? -1 : 1;
@@ -46,6 +47,11 @@ public class Board {
         this.totalDisks++;
         this.lastAccessed[0] = column; //remember last accessed disk
         this.lastAccessed[1] = idx;
+        return "" + column + idx;
+    }
+
+    public int getTeam() {
+        return team;
     }
 
     public boolean isFull() {
@@ -152,22 +158,15 @@ public class Board {
         }
         return null;
     }
-//
-//    public static void main(String[] args) {
-//        Board b = new Board();
-//        b.addDisk(0);
-//        b.addDisk(0);
-//        b.addDisk(0);
-//        b.addDisk(1);
-//        b.addDisk(0);
-//        b.addDisk(1);
-//        b.addDisk(1);
-//        b.addDisk(2);
-//        b.addDisk(2);
-//        b.addDisk(4);
-//        b.addDisk(3);
-//        b.printBoard();
-//        System.out.println(b.canAddDisk(3));
-//        System.out.println(b.getWinningIndexes());
-//    }
+
+    public static void main(String[] args) {
+        Board b = new Board();
+        b.addDisk(0);
+        b.addDisk(0);
+        b.addDisk(0);
+        b.addDisk(0);
+        b.printBoard();
+        System.out.println(b.canAddDisk(3));
+        System.out.println(b.getWinningIndexes());
+    }
 }
