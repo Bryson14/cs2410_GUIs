@@ -1,23 +1,19 @@
 package hw4_connectFour;
 
-import javafx.animation.Animation;
+import javafx.animation.FillTransition;
 import javafx.animation.PathTransition;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-
-import java.util.concurrent.TimeUnit;
 
 public class ConnectFourPane extends Pane{
     private Board board;            // board for logic
@@ -30,8 +26,8 @@ public class ConnectFourPane extends Pane{
     private int gap;                //gap between circles
     private Color team1Color;
     private Color team2Color;
+    private Color currColor;
     private Color nullColor;        // color for a empty spot
-    private Color boardColor;
     private int team;               // 2, 1 place holder for team
 
     ConnectFourPane() {
@@ -45,7 +41,8 @@ public class ConnectFourPane extends Pane{
         team2Color = Color.YELLOW;
         nullColor = Color.LIGHTGREY;
         team = 1;
-        rad = 35;
+        currColor = team1Color;
+        rad = 30;
         gap = 7;
         this.bottomPane = new GridPane();
         this.middlePane = new Pane();
@@ -72,11 +69,11 @@ public class ConnectFourPane extends Pane{
         int row = this.HEIGHT - 1 - Character.getNumericValue(addedPos.charAt(1));
         Node endNode = getNodeIndex(row, col, this.bottomPane);
         team = this.board.getTeam();
-        Color color;
-        if (team == 1) color = team2Color;
-        else color = team1Color;
 
-        Circle cir = new Circle(this.rad, color);
+        if (team == 1) currColor = team1Color;
+        else currColor = team2Color;
+
+        Circle cir = new Circle(this.rad, currColor);
         this.middlePane.getChildren().add(cir);
         PathTransition pt = new PathTransition(Duration.millis(800), new Line(endNode.getLayoutX(), 0,
                 endNode.getLayoutX(), endNode.getLayoutY()), cir);
@@ -104,19 +101,22 @@ public class ConnectFourPane extends Pane{
         String[] winners = this.board.getWinningIndexes();
         for (String pos: winners) {
             int col = Character.getNumericValue(pos.charAt(0));
-            int row = Character.getNumericValue(pos.charAt(1));
+            int row = this.HEIGHT - 1 - Character.getNumericValue(pos.charAt(1));
             Node node = getNodeIndex(row, col, bottomPane);
-            DropShadow glow = new DropShadow(70, Color.GREEN);
-            node.setEffect(glow);
-            //TODO make the node flash
+            Circle cir = new Circle(node.getLayoutX(), node.getLayoutY(), this.rad);
+            this.middlePane.getChildren().add(cir);
+
+            FillTransition ft = new FillTransition(Duration.millis(500), cir, this.nullColor, currColor);
+            ft.setCycleCount(20);
+            ft.play();
         }
     }
 
     private void endGame(boolean winnerExist) {
         VBox window = new VBox(gap * 2);
         window.setStyle("-fx-background-color: #f0ddd6");
-        window.setMinWidth(400);
-        window.setMinHeight(350);
+        window.setMinWidth(200);
+        window.setMinHeight(150);
         window.setAlignment(Pos.CENTER);
         Text playAgain = new Text("Do you want to play again?");
         playAgain.setFont(Font.font(32));
@@ -141,7 +141,7 @@ public class ConnectFourPane extends Pane{
             Text winMessage = new Text("TEAM " + team + " WINS!");
             winMessage.setFont(Font.font(32));
             window.getChildren().addAll(winMessage, playAgain, buttons);
-            this.basePane.getChildren().add(window);
+//            this.basePane.getChildren().add(window);
 
         } else {
             Text uSuck = new Text("Ur bad at this. \nWin before the board fills up!");
