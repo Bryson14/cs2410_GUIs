@@ -30,7 +30,7 @@ public class ConnectFourPane extends Pane{
     private Color nullColor;        // color for a empty spot
     private int team;               // 2, 1 place holder for team
 
-    ConnectFourPane() {
+    public ConnectFourPane() {
         this(7,6);
     }
 
@@ -53,6 +53,9 @@ public class ConnectFourPane extends Pane{
         newGame();
     }
 
+    /**
+     * gridpane of gray circles for background and position reference
+     */
     private void grayCircles() {
         this.bottomPane.setHgap(gap*4);
         this.bottomPane.setVgap(gap);
@@ -64,6 +67,10 @@ public class ConnectFourPane extends Pane{
         } this.basePane.getChildren().add(this.bottomPane);
     }
 
+    /**
+     * Places an animated dropping disk
+     * @param addedPos (col, row) position added by Board
+     */
     private void placeDisk(String addedPos) {
         int col = Character.getNumericValue(addedPos.charAt(0));
         int row = this.HEIGHT - 1 - Character.getNumericValue(addedPos.charAt(1));
@@ -85,7 +92,14 @@ public class ConnectFourPane extends Pane{
         }
     }
 
-    public Node getNodeIndex (int row, int column, GridPane gridPane) {
+    /**
+     * Returns the node at [column, row] in a gridPane
+     * @param row int
+     * @param column int
+     * @param gridPane gridpane to search through
+     * @return Node at desired index in gridPane
+     */
+    private Node getNodeIndex (int row, int column, GridPane gridPane) {
         Node result = null;
         ObservableList<Node> childrens = gridPane.getChildren();
 
@@ -97,6 +111,9 @@ public class ConnectFourPane extends Pane{
         } return result;
     }
 
+    /**
+     * adds four flashing disks on the winning spots
+     */
     private void flashWinners() {
         String[] winners = this.board.getWinningIndexes();
         for (String pos: winners) {
@@ -112,6 +129,10 @@ public class ConnectFourPane extends Pane{
         }
     }
 
+    /**
+     * adds new window at end to close or restart game
+     * @param winnerExist if false, the board is filled with no winner
+     */
     private void endGame(boolean winnerExist) {
         VBox window = new VBox(gap * 2);
         window.setStyle("-fx-background-color: #f0ddd6");
@@ -123,10 +144,8 @@ public class ConnectFourPane extends Pane{
         Button yes = new Button("Yes");
         yes.setStyle("-fx-font-size: 22px");
         yes.setOnAction(e->{
-            ConnectFour.main(null);
-            this.board = new Board(this.WIDTH, this.HEIGHT);
-            this.middlePane = new Pane();
-            this.basePane.getChildren().remove(this.basePane.getChildren().size() - 1);
+            getChildren().clear();
+            newGame();
 
         });
         Button no = new Button("No");
@@ -151,6 +170,9 @@ public class ConnectFourPane extends Pane{
         }
     }
 
+    /**
+     * sets up the different layers and logic of a connect four board
+     */
     void newGame() {
         grayCircles();
         basePane.getChildren().add(this.middlePane);
