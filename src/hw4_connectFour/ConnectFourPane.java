@@ -7,6 +7,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -81,6 +82,10 @@ public class ConnectFourPane extends Pane{
                 endNode.getLayoutX(), endNode.getLayoutY()), cir);
         pt.setCycleCount(1);
         pt.play();
+
+        if (this.board.isFull()) {
+            endGame(false);
+        }
     }
 
     public Node getNodeIndex (int row, int column, GridPane gridPane) {
@@ -100,9 +105,10 @@ public class ConnectFourPane extends Pane{
         for (String pos: winners) {
             int col = Character.getNumericValue(pos.charAt(0));
             int row = Character.getNumericValue(pos.charAt(1));
-            Node node = getNodeIndex(col, row, bottomPane);
+            Node node = getNodeIndex(row, col, bottomPane);
+            DropShadow glow = new DropShadow(70, Color.GREEN);
+            node.setEffect(glow);
             //TODO make the node flash
-            System.out.println("flashing: " + col + row);
         }
     }
 
@@ -161,8 +167,6 @@ public class ConnectFourPane extends Pane{
                     flashWinners();
                     endGame(true);
                 }
-            } else if (this.board.isFull()) {
-                endGame(false);
             }
         });
     }
